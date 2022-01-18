@@ -120,3 +120,4 @@ cells.forEach((cell) => cell.addEventListener('click', cellClick));
 playAgain.addEventListener('click', startNewGame);
 
 gameBoard.fill('null');
+// 
