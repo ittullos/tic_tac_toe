@@ -1,21 +1,21 @@
-
-// Get elements
+// Get elements & define variables
 const cells = document.querySelectorAll('.cell');
 const strike = document.querySelector('#strike');
+const gameSize = cells.length;
+const gameBoard = new Array(gameSize);
+
+gameBoard.fill('null');
+
 const gameOverArea = document.querySelector('#game-over-area');
 const gameOverText = document.querySelector('#game-over-text');
 const playAgain = document.querySelector('#play-again');;
 
-// Define Variables
 const PLAYER_X = 'X';
 const PLAYER_O = 'O';
 
 let turn= PLAYER_X;
 
-const gameSize = cells.length;
-const gameBoard = new Array(gameSize);
-
-// Define audio variables
+// Audio variables
 const gameOverSound1 = new Audio("sounds/game_over_1.wav");
 const gameOverSound2 = new Audio("sounds/game_over_2.wav");
 const clickSoundX = new Audio ("sounds/click_2.wav");
@@ -36,7 +36,6 @@ const winningCombos = [
   { combo: [3, 5, 7], strikeClass: "strike-diagonal-2" }
 ];
 
-
 // Define functions
 const winnerCheck = () => {
   // Check for winner
@@ -53,7 +52,7 @@ const winnerCheck = () => {
       return;
     }
   }
-  //Checl for tie
+  //Check for tie
   const catScratch = gameBoard.every((cell) => cell !== 'null')
   if (catScratch) {
     gameOverDisplay('null');
@@ -61,7 +60,7 @@ const winnerCheck = () => {
 };
 
 const gameOverDisplay = winner => {
-  let message = "Tie!";
+  let message = 'Tie!';
   if (winner != 'null') {
     message = `${winner} is the Winner!`;
   }
@@ -69,19 +68,19 @@ const gameOverDisplay = winner => {
   gameOverText.innerText = message;
   gameOverSound1.play();
   gameOverSound2.play();
-
 };
 
 const cellClick = event => {
   if (gameOverArea.classList.contains('visible')) {
     return;
   }
-
   const cell = event.target
   const cellNumber = cell.dataset.index;
+  if (cell.innerText != ""){
+    return;
+  }
   cell.innerText = turn;
   gameBoard[cellNumber - 1] = turn;
-
   if (turn === PLAYER_X) {
     clickSoundX.play();
     turn = PLAYER_O;
@@ -109,15 +108,13 @@ const setCellHover = () => {
 
 const startNewGame = () => {
   strike.className = "strike";
-  gameOverArea.className = 'hidden';
+  gameOverArea.className = "hidden";
   gameBoard.fill('null');
   cells.forEach((cell) => cell.innerText = "");
   turn = PLAYER_X;
   setCellHover();
 };
+
 // Add event listeners
 cells.forEach((cell) => cell.addEventListener('click', cellClick));
 playAgain.addEventListener('click', startNewGame);
-
-gameBoard.fill('null');
-// 
